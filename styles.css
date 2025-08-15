@@ -65,7 +65,7 @@ body {
     border-radius: 15px;
     font-size: 1.2rem;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    background: linear-gradient(to bottom right, #4b6cb7, #182848);
+    background: linear-gradient(to bottom right, #ff8a00, #da22ff);
 }
 
 .btn {
