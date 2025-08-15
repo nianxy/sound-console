@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainButtonsContainer = document.querySelector('.buttons-container');
     const smallButtonsContainer = document.querySelector('.small-buttons-container');
     const statusEl = document.querySelector('.status');
+    const stopAllBtn = document.getElementById('stop-all-btn');
+
+    const allSounds = [];
 
     // 创建并预加载音频对象
     function createAndPreloadSound(src) {
@@ -23,13 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
         sound.src = src;
         sound.preload = 'auto';
         sound.load();
+        allSounds.push(sound);
         return sound;
     }
 
     // 动态生成主要按钮并设置事件
     mainButtons.forEach(config => {
         const button = document.createElement('button');
-        button.className = `btn ${config.class}`;
+        button.className = `base-btn btn ${config.class}`;
         button.innerHTML = `<span class="btn-icon">${config.icon}</span><span>${config.text}</span>`;
         
         const sound = createAndPreloadSound(config.sound);
@@ -50,17 +54,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // 动态生成小按钮并设置事件
     smallButtons.forEach(config => {
         const button = document.createElement('button');
-        button.className = 'small-btn';
+        button.className = 'base-btn small-btn';
         button.innerHTML = `<span class="small-btn-icon">🎵</span><span>${config.text}</span>`;
         
         const sound = createAndPreloadSound(config.sound);
 
-        button.addEventListener('click', () => {
+        button.addEventListener('touchstart', () => {
             sound.currentTime = 0;
             sound.play();
         });
 
         smallButtonsContainer.appendChild(button);
+    });
+
+    // 停止所有音效
+    stopAllBtn.addEventListener('touchstart', () => {
+        allSounds.forEach(sound => {
+            sound.pause();
+            sound.currentTime = 0;
+        });
     });
     
     // 按钮点击动画
