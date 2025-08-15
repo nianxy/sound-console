@@ -38,7 +38,9 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 40px;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .btn {
@@ -46,10 +48,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 300px;
-            height: 300px;
+            width: 180px;
+            height: 180px;
             border-radius: 20px;
-            font-size: 3rem;
+            font-size: 2.2rem;
             font-weight: bold;
             color: white;
             cursor: pointer;
@@ -69,6 +71,14 @@
 
         .btn.wrong {
             background: linear-gradient(to bottom right, #ff416c, #ff4b2b);
+        }
+
+        .btn.victory {
+            background: linear-gradient(to bottom right, #f9d423, #ff4e50);
+        }
+
+        .btn.failure {
+            background: linear-gradient(to bottom right, #8e0e00, #1f1c18);
         }
 
         .btn-icon {
@@ -125,8 +135,12 @@
 
         @media (max-width: 750px) {
             .buttons-container {
-                flex-direction: column;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
                 align-items: center;
+                gap: 10px;
+                max-width: 100%;
             }
             
             h1 {
@@ -135,13 +149,14 @@
             }
             
             .btn {
-                width: 85vw;
-                max-width: 300px;
-                height: 200px;
+                width: 45%;
+                max-width: 180px;
+                height: 140px;
+                margin: 5px;
             }
             
             .btn-icon {
-                font-size: 4rem;
+                font-size: 3rem;
             }
         }
     </style>
@@ -160,6 +175,16 @@
                 <span class="btn-icon">✗</span>
                 <span>错误</span>
             </button>
+
+            <button class="btn victory">
+                <span class="btn-icon">🏆</span>
+                <span>胜利通关</span>
+            </button>
+            
+            <button class="btn failure">
+                <span class="btn-icon">💀</span>
+                <span>通关失败</span>
+            </button>
         </div>
         
         <div class="status">音效已准备就绪</div>
@@ -171,18 +196,26 @@
             // 创建音频对象
             const correctSound = new Audio();
             const wrongSound = new Audio();
+            const victorySound = new Audio();
+            const failureSound = new Audio();
             
             // 设置音频源 - 这里使用免费在线音效链接
             correctSound.src = './correct.mp3';
             wrongSound.src = './error.mp3';
+            victorySound.src = './success.mp3';
+            failureSound.src = './failure.mp3';
             
             // 设置预加载
             correctSound.preload = 'auto';
             wrongSound.preload = 'auto';
+            victorySound.preload = 'auto';
+            failureSound.preload = 'auto';
             
             // 预加载音频
             correctSound.load();
             wrongSound.load();
+            victorySound.load();
+            failureSound.load();
             
             // 状态显示
             const statusEl = document.querySelector('.status');
@@ -205,16 +238,28 @@
             });
             
             // 点击按钮播放相应音效
-            document.querySelector('.btn.correct').addEventListener('click', () => {
+            document.querySelector('.btn.correct').addEventListener('touchstart', () => {
                 correctSound.currentTime = 0;
                 correctSound.play();
                 animateButton('correct');
             });
             
-            document.querySelector('.btn.wrong').addEventListener('click', () => {
+            document.querySelector('.btn.wrong').addEventListener('touchstart', () => {
                 wrongSound.currentTime = 0;
                 wrongSound.play();
                 animateButton('wrong');
+            });
+            
+            document.querySelector('.btn.victory').addEventListener('touchstart', () => {
+                victorySound.currentTime = 0;
+                victorySound.play();
+                animateButton('victory');
+            });
+            
+            document.querySelector('.btn.failure').addEventListener('touchstart', () => {
+                failureSound.currentTime = 0;
+                failureSound.play();
+                animateButton('failure');
             });
             
             // 按钮点击动画
